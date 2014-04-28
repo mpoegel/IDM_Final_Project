@@ -106,3 +106,27 @@ axis([-s s -s s]);
 for i = 1:18
     cc = text(principal_coordinates(i,5),principal_coordinates(i,6),NamesAbbr(i));
 end
+
+
+%% Clustering using K-means on Data by Experiment 
+
+
+
+%% Histograms of left and right slopes by Experiment
+
+
+
+%% PCA of Data by Residue
+
+
+
+%% Clustering using K-means on Data by Residue
+
+
+
+%% Bar Graph of for left and right slopes of a residue
+
+
+
+
+
