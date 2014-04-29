@@ -113,6 +113,21 @@ end
 
 
 %% Histograms of left and right slopes by Experiment
+counter = 2;
+leftsl_ = [];
+rightsl_ = [];
+for i = 1:19
+    for j = 1:1
+    if mod(counter,2) == 0
+        leftsl_(:,end+1) = Edata(i,j);
+    
+    else
+        rightsl_(:,end+1) = Edata(i,j);
+       
+    end
+    end
+end
+    
 
 
 
