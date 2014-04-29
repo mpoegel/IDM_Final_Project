@@ -19,7 +19,7 @@ binsize=(max_val-min_val)/20;
 
 %% Plot the histogram  
 
-[n1, xout1] = hist(L,min_val + (1:20)*binsize );
+[n1, xout1] = hist(L);
 [n2, xout2] = hist(R,xout1);
 bar(xout2,[n1',n2']);
 title(Ctitle);

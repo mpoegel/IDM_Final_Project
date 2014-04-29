@@ -116,20 +116,26 @@ end
 counter = 2;
 leftsl_ = [];
 rightsl_ = [];
-for i = 1:19
-    for j = 1:1
-    if mod(counter,2) == 0
-        leftsl_(:,end+1) = Edata(i,j);
+for i = 1
+    counter = 0;
+    for j = 1:112
+        if mod(counter,2) == 0
+            leftsl_(:,end+1) = Edata(i,j);
     
-    else
-        rightsl_(:,end+1) = Edata(i,j);
+        else
+            rightsl_(:,end+1) = Edata(i,j);
        
+        end
+    
+        counter = counter + 1
     end
-    end
+        
 end
+
+
     
 
-
+SlopeHist( leftsl_, rightsl_, 'try this' )
 
 %% PCA of Data by Residue
 
