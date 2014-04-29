@@ -116,7 +116,11 @@ end
 counter = 2;
 leftsl_ = [];
 rightsl_ = [];
-for i = 1
+%% we can print out all 19 experimentsa but I don't know what it means exactly and they're squished,
+% maybe we need to think of another way to plot the histograms or figure
+% out the slope hist code to properly edit it. The slopes generally appear
+% to measure similarly. 
+for i =1:19
     counter = 0;
     for j = 1:112
         if mod(counter,2) == 0
@@ -127,13 +131,11 @@ for i = 1
        
         end
     
-        counter = counter + 1
+        counter = counter + 1;
     end
         
 end
 
-
-    
 
 SlopeHist( leftsl_, rightsl_, 'try this' )
 
