@@ -19,12 +19,12 @@ binsize=(max_val-min_val)/20;
 
 %% Plot the histogram  
 
-[n1, xout1] = hist(L,18);
+[n1, xout1] = hist(L,30);
 [n2, xout2] = hist(R,xout1);
 bar(xout2,[n1',n2']);
 title(Ctitle);
-xlabel('scalar projection');
-ylabel('Slope');
+xlabel('Slope');
+ylabel('Count');
 legend('Left','Right');
 hold off
 

@@ -18,6 +18,8 @@ Edata=E(2:end,2:end); % Data organized by experiments
 EColLabels=E(1,2:end); % Residues corresponding to each col of E 
 ERowLabels=E(2:end,1); % Experiments corresponding to each row of E 
 
+[num_exp, num_slopes] = size(Edata);
+
 load('Experiments.mat');
 
 %Here is the content of Names. Each one is a vector 
@@ -54,7 +56,7 @@ ylabel('Component 2');
 s=max(max(abs(principal_coordinates(:,1:2))))*1.1;
 axis([-s s -s s]);
 %The text command print 
-for i = 1:18
+for i = 1:num_exp
     cc = text(principal_coordinates(i,1),principal_coordinates(i,2),Abbr(i));
 end
 
@@ -68,7 +70,7 @@ ylabel('Component 4');
 s=max(max(abs(principal_coordinates(:,3:4))))*1.1;
 axis([-s s -s s]);
 %The text command print 
-for i = 1:18
+for i = 1:num_exp
     cc = text(principal_coordinates(i,3),principal_coordinates(i,4),Abbr(i));
 end
 
@@ -82,25 +84,69 @@ ylabel('Component 6');
 s=max(max(abs(principal_coordinates(:,5:6))))*1.1;
 axis([-s s -s s]);
 %The text command print 
-for i = 1:18
+for i = 1:num_exp
     cc = text(principal_coordinates(i,5),principal_coordinates(i,6),Abbr(i));
 end
 
 
 %% Clustering using K-means on Data by Experiment 
 
+X = principal_coordinates(:,1:2);
+
+% find the elbow in the graph
+figure
+title(' ');
+xlabel('');
+ylabel('');
+K = [];
+OBJ = [];
+% loop over different k values
+for k = 1:10
+    [IDX, C] = kmeans(X, k);
+    [Objective, DBI] = getDBobj(X, IDX, C);
+    K(end+1,:) = k;
+    OBJ(end+1,:) = Objective;
+end
+plot(K,OBJ,'k.-');
+
+% graph the data using the best K
+
+k = 3;
+[IDX, C] = kmeans(X, k);
+
+figure
+grid on
+title('Data by Experiment with K Clusters');
+xlabel('Principal Coordinate 1');
+ylabel('Principal Coordinate 2');
+% Set the scale of the graph.  
+s=max(max(abs(X)))*1.1;
+axis([-s s -s s]);
+
+color_sym = {'r','b','m','c','y','k','g',};
+
+for i = 1:num_exp
+    cc = text(X(i,1),X(i,2),Abbr(i));
+    color_choice = color_sym{ mod(IDX(i),6)+1 };
+    set(cc,'Color',color_choice);
+end
+
 
 
 %% Histograms of left and right slopes by Experiment
-counter = 2;
-leftsl_ = [];
-rightsl_ = [];
-%% we can print out all 19 experimentsa but I don't know what it means exactly and they're squished,
+
+% we can print out all 19 experimentsa but I don't know what it means exactly and they're squished,
 % maybe we need to think of another way to plot the histograms or figure
 % out the slope hist code to properly edit it. The slopes generally appear
 % to measure similarly. 
-for i=1:19
+assigned = [8,9,11,15];
+
+for i=assigned
+    
     counter = 0;
+    leftsl_ = [];
+    rightsl_ = [];
+    
     for j = 1:112
         if mod(counter,2) == 0
             leftsl_(:,end+1) = Edata(i,j);
@@ -112,11 +158,11 @@ for i=1:19
     
         counter = counter + 1;
     end
-        
+    
+    SlopeHist( leftsl_, rightsl_, strcat('Experiment ',i) )
 end
 
 
-SlopeHist( leftsl_, rightsl_, 'try this' )
 
 %% PCA of Data by Residue
 
