@@ -173,7 +173,7 @@ end
 %% PCA of Data by Residue
 
 
-[eigenvectors, principal_coordinates, D] = pca(Rdata);
+[eigenvectors, principal_coordinates1, D] = pca(Rdata);
 
 % Look at the explained variance of the eigenvalues
 var_explained  = cumsum(D)/sum(D);
@@ -200,6 +200,7 @@ axis([-s s -s s]);
 for i = 1:num_expr
     cc = text(principal_coordinates1(i,1),principal_coordinates1(i,2),Protein(i));
 end
+grid off
 
 % Plot Component 3 vs Component 4
 figure
@@ -214,6 +215,7 @@ axis([-s s -s s]);
 for i = 1:num_expr
     cc = text(principal_coordinates1(i,3),principal_coordinates1(i,4),Protein(i));
 end
+grid off
 
 % Plot Component 5 vs Component 6
 figure
@@ -228,6 +230,7 @@ axis([-s s -s s]);
 for i = 1:num_expr
     cc = text(principal_coordinates1(i,5),principal_coordinates1(i,6),Protein(i));
 end
+grid off
 
 %% Clustering using K-means on Data by Residue
 
