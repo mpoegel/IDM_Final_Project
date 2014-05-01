@@ -19,6 +19,7 @@ EColLabels=E(1,2:end); % Residues corresponding to each col of E
 ERowLabels=E(2:end,1); % Experiments corresponding to each row of E 
 
 [num_exp, num_slopes] = size(Edata);
+[num_expr, num_slopesr] = size(Rdata);
 
 load('Experiments.mat');
 
@@ -141,7 +142,8 @@ end
 % to measure similarly. 
 assigned = [8,9,11,15];
 
-for i=assigned
+
+for i=1:4
     
     counter = 0;
     leftsl_ = [];
@@ -149,17 +151,21 @@ for i=assigned
     
     for j = 1:112
         if mod(counter,2) == 0
-            leftsl_(:,end+1) = Edata(i,j);
+            leftsl_(:,end+1) = Edata(assigned(i),j);
     
         else
-            rightsl_(:,end+1) = Edata(i,j);
+            rightsl_(:,end+1) = Edata(assigned(i),j);
        
         end
     
         counter = counter + 1;
     end
     
-    SlopeHist( leftsl_, rightsl_, strcat('Experiment ',i) )
+    output = int2str(assigned(i));
+   %% blanks is suppose to be a space character but it isn't working relatively
+   
+    title = strcat('Experiment', blanks(10), output);
+    SlopeHist( leftsl_, rightsl_, title)
 end
 
 
@@ -167,6 +173,61 @@ end
 %% PCA of Data by Residue
 
 
+[eigenvectors, principal_coordinates, D] = pca(Rdata);
+
+% Look at the explained variance of the eigenvalues
+var_explained  = cumsum(D)/sum(D);
+figure
+subplot(2,1,1)
+bar(D);
+title('Eigenvalues')
+subplot(2,1,2)
+bar(var_explained)
+set(gca,'YTick',0:0.1:1)
+set(gca,'XTick',0:5:69)
+title('Variance Explained')
+
+%% Plot Component 1 vs Component 2
+figure
+grid on
+title('Residue PCA By Experiment of Components 1 and 2');
+xlabel('Component 1');
+ylabel('Component 2');
+% Set the scale of the graph.  
+s=max(max(abs(principal_coordinates1(:,1:2))))*1.1;
+axis([-s s -s s]);
+%The text command print 
+for i = 1:num_expr
+    cc = text(principal_coordinates1(i,1),principal_coordinates1(i,2),Protein(i));
+end
+
+% Plot Component 3 vs Component 4
+figure
+grid on
+title('Residue PCA By Experiment of Components 3 and 4');
+xlabel('Component 3');
+ylabel('Component 3');
+% Set the scale of the graph.  
+s=max(max(abs(principal_coordinates1(:,3:4))))*1.1;
+axis([-s s -s s]);
+%The text command print 
+for i = 1:num_expr
+    cc = text(principal_coordinates1(i,3),principal_coordinates1(i,4),Protein(i));
+end
+
+% Plot Component 5 vs Component 6
+figure
+grid on
+title('Residue PCA By Experiment of Components 5 and 6');
+xlabel('Component 5');
+ylabel('Component 6');
+% Set the scale of the graph.  
+s=max(max(abs(principal_coordinates1(:,5:6))))*1.1;
+axis([-s s -s s]);
+%The text command print 
+for i = 1:num_expr
+    cc = text(principal_coordinates1(i,5),principal_coordinates1(i,6),Protein(i));
+end
 
 %% Clustering using K-means on Data by Residue
 
