@@ -19,7 +19,7 @@ EColLabels=E(1,2:end); % Residues corresponding to each col of E
 ERowLabels=E(2:end,1); % Experiments corresponding to each row of E 
 
 [num_exp, num_slopes] = size(Edata);
-[num_expr, num_slopesr] = size(Rdata);
+[num_residues, num_exp2] = size(Rdata);
 
 load('Experiments.mat');
 
@@ -92,45 +92,58 @@ end
 
 %% Clustering using K-means on Data by Experiment 
 
-X = principal_coordinates(:,1:2);
-
 % find the elbow in the graph
-figure
-title(' ');
-xlabel('');
-ylabel('');
+figure;
 K = [];
 OBJ = [];
 % loop over different k values
 for k = 1:10
-    [IDX, C] = kmeans(X, k);
-    [Objective, DBI] = getDBobj(X, IDX, C);
+    [IDX, C] = kmeans(Edata, k);
+    [Objective, DBI] = getDBobj(Edata, IDX, C);
     K(end+1,:) = k;
     OBJ(end+1,:) = Objective;
 end
+hold on;
 plot(K,OBJ,'k.-');
+title('K Clusters vs. Objective');
+xlabel('K Value');
+ylabel('Objective');
 
-% graph the data using the best K
-
+% chart the data using the best K
 k = 3;
-[IDX, C] = kmeans(X, k);
-
-figure
-grid on
-title('Data by Experiment with K Clusters');
-xlabel('Principal Coordinate 1');
-ylabel('Principal Coordinate 2');
-% Set the scale of the graph.  
-s=max(max(abs(X)))*1.1;
-axis([-s s -s s]);
-
-color_sym = {'r','b','m','c','y','k','g',};
-
+[IDX, C] = kmeans(Edata, k);
+[obj, DBI] = getDBobj(Edata, IDX, C);
+% mark the elbow of the graph with a red plus
+plot(k,obj,'r+');
+hold off;
+% count the number in each cluster
+count = zeros(k,1);
 for i = 1:num_exp
-    cc = text(X(i,1),X(i,2),Abbr(i));
-    color_choice = color_sym{ mod(IDX(i),6)+1 };
-    set(cc,'Color',color_choice);
+    count(IDX(i)) = count(IDX(i)) + 1;
 end
+
+% make a chart showing the number in each cluster
+figure
+row_names = {'Cluster 1', 'Cluster 2', 'Cluster 3'};
+col_names = {'Data in Cluster'};
+t = uitable('ColumnName',col_names, 'RowName', row_names, 'Data',count, 'Position',[20 300 360 100]);
+
+% figure
+% grid on
+% title('Data by Experiment with K Clusters');
+% xlabel('Principal Coordinate 1');
+% ylabel('Principal Coordinate 2');
+% % Set the scale of the graph.  
+% s=max(max(abs(X)))*1.1;
+% axis([-s s -s s]);
+% 
+% color_sym = {'r','b','m','c','y','k','g',};
+% 
+% for i = 1:num_exp
+%     cc = text(X(i,1),X(i,2),Abbr(i));
+%     color_choice = color_sym{ mod(IDX(i),6)+1 };
+%     set(cc,'Color',color_choice);
+% end
 
 
 
@@ -161,11 +174,9 @@ for i=1:4
         counter = counter + 1;
     end
     
-    output = int2str(assigned(i));
-   %% blanks is suppose to be a space character but it isn't working relatively
-   
-    title = strcat('Experiment', blanks(10), output);
-    SlopeHist( leftsl_, rightsl_, title)
+    output = int2str(assigned(i));   
+    T = strcat('Experiment-', output);
+    SlopeHist( leftsl_, rightsl_, T);
 end
 
 
@@ -180,14 +191,14 @@ var_explained  = cumsum(D)/sum(D);
 figure
 subplot(2,1,1)
 bar(D);
-title('Eigenvalues')
+title('Eigenvalues');
 subplot(2,1,2)
 bar(var_explained)
 set(gca,'YTick',0:0.1:1)
 set(gca,'XTick',0:5:69)
 title('Variance Explained')
 
-%% Plot Component 1 vs Component 2
+% Plot Component 1 vs Component 2
 figure
 grid on
 title('Residue PCA By Experiment of Components 1 and 2');
@@ -197,10 +208,9 @@ ylabel('Component 2');
 s=max(max(abs(principal_coordinates1(:,1:2))))*1.1;
 axis([-s s -s s]);
 %The text command print 
-for i = 1:num_expr
-    cc = text(principal_coordinates1(i,1),principal_coordinates1(i,2),Protein(i));
+for i = 1:num_residues
+    cc = text(principal_coordinates1(i,1),principal_coordinates1(i,2),int2str(RRowLabels(i)));
 end
-grid off
 
 % Plot Component 3 vs Component 4
 figure
@@ -212,10 +222,9 @@ ylabel('Component 3');
 s=max(max(abs(principal_coordinates1(:,3:4))))*1.1;
 axis([-s s -s s]);
 %The text command print 
-for i = 1:num_expr
-    cc = text(principal_coordinates1(i,3),principal_coordinates1(i,4),Protein(i));
+for i = 1:num_residues
+    cc = text(principal_coordinates1(i,3),principal_coordinates1(i,4),int2str(RRowLabels(i)));
 end
-grid off
 
 % Plot Component 5 vs Component 6
 figure
@@ -227,10 +236,9 @@ ylabel('Component 6');
 s=max(max(abs(principal_coordinates1(:,5:6))))*1.1;
 axis([-s s -s s]);
 %The text command print 
-for i = 1:num_expr
-    cc = text(principal_coordinates1(i,5),principal_coordinates1(i,6),Protein(i));
+for i = 1:num_residues
+    cc = text(principal_coordinates1(i,5),principal_coordinates1(i,6),int2str(RRowLabels(i)));
 end
-grid off
 
 %% Clustering using K-means on Data by Residue
 
