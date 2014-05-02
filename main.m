@@ -282,6 +282,45 @@ t = uitable('ColumnName',col_names, 'RowName', row_names, 'Data',count, 'Positio
 
 %% Bar Graph of for left and right slopes of a residue
 
+assigned = [8,9,11,15];
+
+
+for i=1:19
+    
+    counter = 0;
+    leftsl_ = [];
+    rightsl_ = [];
+    
+    for j = 1:112
+        
+        if mod(counter,2) == 0 && counter ~= 8 && counter ~= 9 && counter ~= 11 && counter ~= 15
+            leftsl_(:,end+1) = 0;
+    
+        end
+        if mod(counter,2) ~= 0 && j ~= 8 && j ~= 9 && j ~= 11 && j ~= 15
+            rightsl_(:,end+1) = 0;
+       
+        end
+        
+        if mod(counter,2) == 0 && counter == j == 8;
+            leftsl_(:,end+1) = Edata(assigned(i),j);
+        counter = counter + 1;
+        
+        if mod(counter,2) ~= 0 && (j == 9 || j == 11 || j == 15)
+            rightsl_(:,end+1) = Edata(assigned(i),j);
+        counter = counter + 1;
+    end
+    
+    
+    figure
+    axis([0 149 -0.02 .015])
+    hold on
+    bar(leftsl_,'r');
+    bar(rightsl_);
+    
+    
+end
+
 
 
 
