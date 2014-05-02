@@ -105,7 +105,7 @@ for k = 1:10
 end
 hold on;
 plot(K,OBJ,'k.-');
-title('K Clusters vs. Objective');
+title('Objective vs. K Clusters');
 xlabel('K Value');
 ylabel('Objective');
 
@@ -242,6 +242,42 @@ end
 
 %% Clustering using K-means on Data by Residue
 
+% find the elbow in the graph
+figure;
+K = [];
+OBJ = [];
+% loop over different k values
+for k = 1:10
+    [IDX, C] = kmeans(Rdata, k);
+    [Objective, DBI] = getDBobj(Rdata, IDX, C);
+    K(end+1,:) = k;
+    OBJ(end+1,:) = Objective;
+end
+hold on;
+plot(K,OBJ,'k.-');
+title('Objective vs. K Clusters');
+xlabel('K Value');
+ylabel('Objective');
+
+
+% chart the data using the best K
+k = 3;
+[IDX, C] = kmeans(Rdata, k);
+[obj, DBI] = getDBobj(Rdata, IDX, C);
+% mark the elbow of the graph with a red plus
+plot(k,obj,'r+');
+hold off;
+% count the number in each cluster
+count = zeros(k,1);
+for i = 1:num_residues
+    count(IDX(i)) = count(IDX(i)) + 1;
+end
+
+% make a chart showing the number in each cluster
+figure
+row_names = {'Cluster 1', 'Cluster 2', 'Cluster 3'};
+col_names = {'Data in Cluster'};
+t = uitable('ColumnName',col_names, 'RowName', row_names, 'Data',count, 'Position',[20 300 360 100]);
 
 
 %% Bar Graph of for left and right slopes of a residue
