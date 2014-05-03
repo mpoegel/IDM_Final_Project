@@ -331,9 +331,78 @@ for i = assigned;
 end
 %%
 %%================================================
+firstpro = [ 7 8 9 10 11 12 ];
+secondpro = [ 13 14 15 16 17 18];
+
+place = 1;
 
 
 
+
+
+getname = 2;
+entry = [];
+spot =1;
+check = 1;
+
+while place < 112 ,
+    lefttotal = 0;
+    righttotal = 0;
+    ratio = 0;
+    
+    
+    if spot == RRowLabels(check); 
+    
+        lefttotal = Edata(7, place);
+        lefttotal = Edata(8, place) + lefttotal;
+        lefttotal =Edata(9, place) + lefttotal;
+        lefttotal =Edata(10, place) + lefttotal; 
+        lefttotal =Edata(11, place) + lefttotal;
+        lefttotal =Edata(12, place) + lefttotal;
+
+
+    
+        righttotal = Edata(7, place+1);
+        righttotal = Edata(8, place + 1) + righttotal;
+        righttotal =Edata(9, place + 1) + righttotal;
+        righttotal =Edata(10, place + 1) + righttotal; 
+        righttotal =Edata(11, place + 1) + righttotal;
+        righttotal =Edata(12, place + 1) + righttotal;
+
+
+
+        ratio = lefttotal ./ righttotal;
+
+        entry(:,end+1) = ratio;
+        place = place + 2;
+        check = check +1
+    end
+    
+    if spot ~= RRowLabels(check); 
+        entry(:,end+1) = 0; 
+    end
+        
+        
+    spot = spot+1;
+    display(ratio);
+    
+    
+    
+    
+  
+    
+end
+
+pro = Protein(7);
+figure
+axis([-1 149 -5 20])
+T = strcat('Slope ratio of Protein- ', pro);
+title(T);
+xlabel('Residues')
+ylabel('Slopes ratio left: right')
+hold on
+bar(entry,'b');
+hold off  
 
 
 
