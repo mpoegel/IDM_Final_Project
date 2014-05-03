@@ -1,7 +1,7 @@
 %% Final Project
 % Analysis of Protein Folding
 % Matthew Poegel and Jessie Sodolo
-% May 7, 2014
+% May 5, 2014
 
 close all;
 clear;
@@ -122,11 +122,12 @@ for i = 1:num_exp
     count(IDX(i)) = count(IDX(i)) + 1;
 end
 
-% make a chart showing the number in each cluster
+% make a chart showing the total number in each cluster
 figure
 row_names = {'Cluster 1', 'Cluster 2', 'Cluster 3'};
 col_names = {'Data in Cluster'};
 t = uitable('ColumnName',col_names, 'RowName', row_names, 'Data',count, 'Position',[20 300 360 100]);
+
 
 % figure
 % grid on
@@ -201,7 +202,7 @@ title('Variance Explained')
 % Plot Component 1 vs Component 2
 figure
 grid on
-title('Residue PCA By Experiment of Components 1 and 2');
+title('PCA By Residue of Components 1 and 2');
 xlabel('Component 1');
 ylabel('Component 2');
 % Set the scale of the graph.  
@@ -215,7 +216,7 @@ end
 % Plot Component 3 vs Component 4
 figure
 grid on
-title('Residue PCA By Experiment of Components 3 and 4');
+title('PCA By Residue of Components 3 and 4');
 xlabel('Component 3');
 ylabel('Component 3');
 % Set the scale of the graph.  
@@ -229,7 +230,7 @@ end
 % Plot Component 5 vs Component 6
 figure
 grid on
-title('Residue PCA By Experiment of Components 5 and 6');
+title('PCA By Residue of Components 5 and 6');
 xlabel('Component 5');
 ylabel('Component 6');
 % Set the scale of the graph.  
@@ -278,6 +279,9 @@ figure
 row_names = {'Cluster 1', 'Cluster 2', 'Cluster 3'};
 col_names = {'Data in Cluster'};
 t = uitable('ColumnName',col_names, 'RowName', row_names, 'Data',count, 'Position',[20 300 360 100]);
+
+clusters = [RRowLabels IDX]
+display(clusters)
 
 
 %% Bar Graph of for left and right slopes of a residue
