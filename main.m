@@ -342,25 +342,43 @@ place = 1;
 
 getname = 2;
 entry = [];
+secpro = [];
 spot =1;
 check = 1;
 
 while place < 112 ,
     lefttotal = 0;
     righttotal = 0;
+    slefttotal = 0;
+    srighttotal = 0;
     ratio = 0;
+    ratio2 = 0;
+     if spot < RRowLabels(check); 
+        entry(:,end+1) = 0; 
+        secpro(:,end+1) = 0;
+        %%opposite(:,end+1) = 0;
     
+     end
     
     if spot == RRowLabels(check); 
-    
+   
         lefttotal = Edata(7, place);
         lefttotal = Edata(8, place) + lefttotal;
         lefttotal =Edata(9, place) + lefttotal;
         lefttotal =Edata(10, place) + lefttotal; 
         lefttotal =Edata(11, place) + lefttotal;
         lefttotal =Edata(12, place) + lefttotal;
-
-
+        lefttotal = (lefttotal ./ 6);
+        
+        
+        slefttotal = Edata(13, place);
+        slefttotal = Edata(14, place) + slefttotal;
+        slefttotal = Edata(15, place) + slefttotal;
+        slefttotal = Edata(16, place) + slefttotal; 
+        slefttotal = Edata(17, place) + slefttotal;
+        slefttotal = Edata(18, place) + slefttotal;
+        slefttotal = (slefttotal ./6);
+        
     
         righttotal = Edata(7, place+1);
         righttotal = Edata(8, place + 1) + righttotal;
@@ -368,40 +386,57 @@ while place < 112 ,
         righttotal =Edata(10, place + 1) + righttotal; 
         righttotal =Edata(11, place + 1) + righttotal;
         righttotal =Edata(12, place + 1) + righttotal;
-
-
-
+        righttotal = (righttotal ./6);
+        
+        
+        srighttotal = Edata(13, place + 1);
+        srighttotal = Edata(14, place + 1) + srighttotal;
+        srighttotal =Edata(15, place + 1) + srighttotal;
+        srighttotal =Edata(16, place + 1) + srighttotal; 
+        srighttotal =Edata(17, place + 1) + srighttotal;
+        srighttotal =Edata(18, place + 1) + srighttotal;
+        srighttotal = (srighttotal ./6);
+        
         ratio = lefttotal ./ righttotal;
-
+        ratio2 = slefttotal ./ srighttotal;
+        
+        
+        secpro(:,end+1) = ratio2;
         entry(:,end+1) = ratio;
+        
         place = place + 2;
-        check = check +1
-    end
-    
-    if spot ~= RRowLabels(check); 
-        entry(:,end+1) = 0; 
-    end
+        check = check +1;
+    end 
+   
         
         
     spot = spot+1;
     display(ratio);
     
-    
-    
-    
-  
-    
 end
-
+        
+        
+    
 pro = Protein(7);
 figure
-axis([-1 149 -5 20])
+axis([-1 149 -10 20])
 T = strcat('Slope ratio of Protein- ', pro);
 title(T);
 xlabel('Residues')
 ylabel('Slopes ratio left: right')
 hold on
 bar(entry,'b');
+hold off  
+
+pro2 = Protein(13);
+figure
+axis([-1 149 -10 20])
+T = strcat('Slope ratio of Protein- ', pro2);
+title(T);
+xlabel('Residues')
+ylabel('Slopes ratio left: right')
+hold on
+bar(secpro,'r');
 hold off  
 
 
