@@ -428,10 +428,10 @@ pro = Protein(7);
 figure
 grid on
 axis([-1 149 -10 20])
-T = strcat('Slope ratio of Protein- ', pro);
+T = strcat('Slope Ratio of Protein- ', pro);
 title(T);
 xlabel('Residues')
-ylabel('Slopes ratio left: right')
+ylabel('Slopes Ratio left: right')
 hold on
 bar(entry,'b');
 set(gca,'XTickLabel',{RRowLabels})
@@ -444,7 +444,7 @@ axis([-1 149 -10 20])
 T = strcat('Slope ratio of Protein- ', pro2);
 title(T);
 xlabel('Residues')
-ylabel('Slopes ratio left: right')
+ylabel('Slopes Ratio left : right')
 hold on
 bar(secpro,'r');
 hold off  
