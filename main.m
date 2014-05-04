@@ -91,6 +91,9 @@ end
 
 
 %% Clustering using K-means on Data by Experiment 
+%======================================================
+%======================================================
+
 
 % find the elbow in the graph
 figure;
@@ -149,21 +152,27 @@ t = uitable('ColumnName',col_names, 'RowName', row_names, 'Data',count, 'Positio
 
 
 %% Histograms of left and right slopes by Experiment
+%======================================================
+%=======================================================
 
-% we can print out all 19 experimentsa but I don't know what it means exactly and they're squished,
-% maybe we need to think of another way to plot the histograms or figure
-% out the slope hist code to properly edit it. The slopes generally appear
-% to measure similarly. 
+
+%All the experiments assigned to us our in this array for usuage.
+
 assigned = [8,9,11,15];
 
 
 for i=1:4
     
     counter = 0;
+    %Separate matrix to keep the left and right slopes. 
     leftsl_ = [];
     rightsl_ = [];
     
     for j = 1:112
+        
+        %The residues go left to right, if the place in Edata is even go
+        %left if odd right.
+        
         if mod(counter,2) == 0
             leftsl_(:,end+1) = Edata(assigned(i),j);
     
@@ -174,6 +183,7 @@ for i=1:4
     
         counter = counter + 1;
     end
+    
     
     output = int2str(assigned(i));   
     T = strcat('Experiment-', output);
@@ -287,23 +297,35 @@ display(clusters)
 %% Bar Graph of for left and right slopes of a residue
 
 
+%All the experiments assigned to us our in this array for usuage.
 
 assigned = [8,9,11,15];
 
 
 
 for i = assigned;
+    %loop through each experiment and store it's left slopes in one matrix and the right in another
     leftsl_ = [];
     rightsl_ = [];
+    
+    
+    %variables used to fill in the zeros for missing residue numbers
     place = 1;
+    %variable is used to obtain every residue with Edata
     j = 1;
+    
     for k = 1:140
 
        
+     %Condition checks if spot which is an integer is an actual residue
+     %number we have data for. If it is then we need to calculate its
+     %slopes, if its not then we fill a zero in for that residue number. 
+     
         if k < RRowLabels(place)
                 leftsl_(:,end+1) = 0;
                 rightsl_(:,end+1) = 0;
         end
+        
         if k == RRowLabels(place)  
                  leftsl_(:,end+1) = Edata(i,j);
 
@@ -321,6 +343,7 @@ for i = assigned;
 
     end
 
+    %Output the contents in each matrix.
     figure
     axis([0 149 -0.02 .015])
     output = int2str(i);   
@@ -334,34 +357,56 @@ for i = assigned;
     
 end
 %%
-%%================================================
-firstpro = [ 7 8 9 10 11 12 ];
-secondpro = [ 13 14 15 16 17 18];
+
+%========================================================================
+%========================================================================
+% PART 4.) 
+
+% We further explored the idea of looking at the residual slopes.
+% To get a better understanding of the chervon structure we came up with an
+% idea. For each protein we looked up the experiments in respect it
+% contained, we then summed the left side and right side separately of each
+% residue through all experiments in that protein. After the summation a
+% ratio of left slope divided by right slope was calculated. The ratio was
+% the plotted for each residue. This process was repeated for remaining
+% proteins. 
+
+
+% variable used to print the left and right slopes
 
 place = 1;
 
+%Matrices used to store the ratio amounts calculated. 
 entry = [];
 secpro = [];
 thridpro = [];
 
-
+% variable used to fill in the zeros for missing residue numbers
 spot =1;
-check = 1;
+
 
 while place < 112 ,
+    %Variable to store the residues left total for each protein
+    
+    % left and right for I92A
     lefttotal = 0;
     righttotal = 0;
+    
+    % left and right for L125A
     slefttotal = 0;
     srighttotal = 0;
+   
+    % left and right for D+PHS 
     lt = 0;
     rt = 0;
     
+    %Variable to store each ratio protein I92A, L125A, D+PHS respectively
     
     ratio = 0;
     ratio2 = 0;
     ratio3 = 0;
     
-    
+      %Spot is a residue number we don't have 
      if spot < RRowLabels(check); 
         entry(:,end+1) = 0; 
         secpro(:,end+1) = 0;
@@ -369,9 +414,13 @@ while place < 112 ,
     
      end
     
+     %Condition checks if spot which is an integer is an actual residue
+     %number we have data for. If it is then we need to calculate its
+     %slopes. 
+     
     if spot == RRowLabels(check); 
    
-        
+        % left slope for D+PHS 
         lt = Edata(1, place);
         lt = Edata(2, place) + lt;
         lt =Edata(3, place) + lt;
@@ -380,7 +429,7 @@ while place < 112 ,
         lt =Edata(6, place) + lt;
         lt = (lt ./ 6);
         
-      
+         % left slope for I92A 
         lefttotal = Edata(7, place);
         lefttotal = Edata(8, place) + lefttotal;
         lefttotal =Edata(9, place) + lefttotal;
@@ -389,7 +438,7 @@ while place < 112 ,
         lefttotal =Edata(12, place) + lefttotal;
         lefttotal = (lefttotal ./ 6);
         
-        
+         % left slope for L125A
         slefttotal = Edata(13, place);
         slefttotal = Edata(14, place) + slefttotal;
         slefttotal = Edata(15, place) + slefttotal;
@@ -398,6 +447,7 @@ while place < 112 ,
         slefttotal = Edata(18, place) + slefttotal;
         slefttotal = (slefttotal ./6);
         
+         % right slope for D+PHS 
         rt = Edata(1, place+1);
         rt = Edata(2, place+1) + rt;
         rt =Edata(3, place+1) + rt;
@@ -406,10 +456,7 @@ while place < 112 ,
         rt =Edata(6, place+1) + rt;
         rt = (rt ./ 6);
         
-        
-        
-        
-        
+         % right slope for I92A 
         righttotal = Edata(7, place+1);
         righttotal = Edata(8, place + 1) + righttotal;
         righttotal =Edata(9, place + 1) + righttotal;
@@ -418,7 +465,7 @@ while place < 112 ,
         righttotal =Edata(12, place + 1) + righttotal;
         righttotal = (righttotal ./6);
         
-        
+         % right slope for L125A 
         srighttotal = Edata(13, place + 1);
         srighttotal = Edata(14, place + 1) + srighttotal;
         srighttotal =Edata(15, place + 1) + srighttotal;
@@ -427,14 +474,21 @@ while place < 112 ,
         srighttotal =Edata(18, place + 1) + srighttotal;
         srighttotal = (srighttotal ./6);
         
+        
+        % Ratios calculated
         ratio = lefttotal ./ righttotal;
         ratio2 = slefttotal ./ srighttotal;
         ratio3 = lt ./ rt;
         
+        
+        % ratios entered into respective matrix
         thridpro(:,end+1) = ratio3;
         secpro(:,end+1) = ratio2;
         entry(:,end+1) = ratio;
         
+        %Increment the variables to move through the residues and residue
+        %number. 
+   
         place = place + 2;
         check = check +1;
     end 
@@ -448,7 +502,23 @@ while place < 112 ,
     
     
 end
-        
+
+
+%Each stored matrix containning protein ratios is printed out separately
+%with the corresponding protein name labled as the title.
+
+pro3 = Protein(1);
+figure
+grid on
+axis([-1 149 -10 20])
+T = strcat('Slope ratio of Protein- ', pro3);
+title(T);
+xlabel('Residues')
+ylabel('Slopes ratio left: right')
+hold on
+bar(thridpro,'g');
+hold off  
+       
         
     
 pro = Protein(7);
@@ -476,17 +546,6 @@ hold on
 bar(secpro,'r');
 hold off  
 
-pro3 = Protein(1);
-figure
-grid on
-axis([-1 149 -10 20])
-T = strcat('Slope ratio of Protein- ', pro3);
-title(T);
-xlabel('Residues')
-ylabel('Slopes ratio left: right')
-hold on
-bar(thridpro,'g');
-hold off  
 
 
 
