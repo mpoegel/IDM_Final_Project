@@ -340,13 +340,11 @@ secondpro = [ 13 14 15 16 17 18];
 
 place = 1;
 
-
-
-
-
-getname = 2;
 entry = [];
 secpro = [];
+thridpro = [];
+
+
 spot =1;
 check = 1;
 
@@ -355,17 +353,34 @@ while place < 112 ,
     righttotal = 0;
     slefttotal = 0;
     srighttotal = 0;
+    lt = 0;
+    rt = 0;
+    
+    
     ratio = 0;
     ratio2 = 0;
+    ratio3 = 0;
+    
+    
      if spot < RRowLabels(check); 
         entry(:,end+1) = 0; 
         secpro(:,end+1) = 0;
-        %%opposite(:,end+1) = 0;
+        thridpro(:,end+1) = 0;
     
      end
     
     if spot == RRowLabels(check); 
    
+        
+        lt = Edata(1, place);
+        lt = Edata(2, place) + lt;
+        lt =Edata(3, place) + lt;
+        lt =Edata(4, place) + lt; 
+        lt =Edata(5, place) + lt;
+        lt =Edata(6, place) + lt;
+        lt = (lt ./ 6);
+        
+      
         lefttotal = Edata(7, place);
         lefttotal = Edata(8, place) + lefttotal;
         lefttotal =Edata(9, place) + lefttotal;
@@ -383,7 +398,18 @@ while place < 112 ,
         slefttotal = Edata(18, place) + slefttotal;
         slefttotal = (slefttotal ./6);
         
-    
+        rt = Edata(1, place+1);
+        rt = Edata(2, place+1) + rt;
+        rt =Edata(3, place+1) + rt;
+        rt =Edata(4, place+1) + rt; 
+        rt =Edata(5, place+1) + rt;
+        rt =Edata(6, place+1) + rt;
+        rt = (rt ./ 6);
+        
+        
+        
+        
+        
         righttotal = Edata(7, place+1);
         righttotal = Edata(8, place + 1) + righttotal;
         righttotal =Edata(9, place + 1) + righttotal;
@@ -403,8 +429,9 @@ while place < 112 ,
         
         ratio = lefttotal ./ righttotal;
         ratio2 = slefttotal ./ srighttotal;
+        ratio3 = lt ./ rt;
         
-        
+        thridpro(:,end+1) = ratio3;
         secpro(:,end+1) = ratio2;
         entry(:,end+1) = ratio;
         
@@ -434,7 +461,7 @@ xlabel('Residues')
 ylabel('Slopes Ratio left: right')
 hold on
 bar(entry,'b');
-set(gca,'XTickLabel',{RRowLabels})
+
 hold off  
 
 pro2 = Protein(13);
@@ -448,6 +475,19 @@ ylabel('Slopes Ratio left : right')
 hold on
 bar(secpro,'r');
 hold off  
+
+pro3 = Protein(1);
+figure
+grid on
+axis([-1 149 -10 20])
+T = strcat('Slope ratio of Protein- ', pro3);
+title(T);
+xlabel('Residues')
+ylabel('Slopes ratio left: right')
+hold on
+bar(thridpro,'g');
+hold off  
+
 
 
 
