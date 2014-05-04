@@ -416,6 +416,9 @@ while place < 112 ,
         
     spot = spot+1;
     display(ratio);
+ 
+    
+    
     
 end
         
@@ -423,6 +426,7 @@ end
     
 pro = Protein(7);
 figure
+grid on
 axis([-1 149 -10 20])
 T = strcat('Slope ratio of Protein- ', pro);
 title(T);
@@ -430,10 +434,12 @@ xlabel('Residues')
 ylabel('Slopes ratio left: right')
 hold on
 bar(entry,'b');
+set(gca,'XTickLabel',{RRowLabels})
 hold off  
 
 pro2 = Protein(13);
 figure
+grid on
 axis([-1 149 -10 20])
 T = strcat('Slope ratio of Protein- ', pro2);
 title(T);
