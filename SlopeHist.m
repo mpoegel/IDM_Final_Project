@@ -1,23 +1,15 @@
+%% Plot a histogram of the slopes
 
 function [ h ] = SlopeHist( L, R, Ctitle )
-%% Plot class histograms and threshold line
+% Adapted from Dr. Bennett's ClassHist function
 % Inputs 
-% Cp = Scalar projections of Class 1
-% Cm = Scalar projections of Class -1 
-% t= threhold
-% err=error in percentage
-% Title is title of the plot
+% L = left slopes
+% R = right slopes 
+% Ctitle is title of the plot
 % Output h is the handle to the figure
-%% Start the Figure
+
 h=figure;
 hold on;
-
-%%Calculate the binsizes
-min_val = min([L;R]);
-max_val = max([L;R]);
-binsize=(max_val-min_val)/20;
-
-%% Plot the histogram  
 
 [n1, xout1] = hist(L,30);
 [n2, xout2] = hist(R,xout1);
